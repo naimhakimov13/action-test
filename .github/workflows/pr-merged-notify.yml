@@ -1,0 +1,20 @@
+name: Notify Telegram on PR Merge
+
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  notify:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send PR Merged Notification to Telegram
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+            -d text="✅ Pull Request *merged* in *${{ github.repository }}*%0A
+👤 Author: ${{ github.actor }}%0A
+🔗 Link: ${{ github.event.pull_request.html_url }}%0A
+📌 Title: ${{ github.event.pull_request.title }}" \
+  -d parse_mode=Markdown
