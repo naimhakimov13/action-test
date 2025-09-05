@@ -1,19 +1,24 @@
-name: Notify Telegram on PR
+name: Notify Telegram on PR Events
 
 on:
   pull_request:
-    types: [ opened ]
+    types: [opened, closed]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send PR Notification to Telegram
+      - name: Send Telegram Notification
         run: |
+          if [ "${{ github.event.action }}" == "opened" ]; then
+            MESSAGE="🚀 New Pull Request in *${{ github.repository }}*%0A👤 Author: ${{ github.actor }}%0A🔗 Link: ${{ github.event.pull_request.html_url }}%0A📌 Title: ${{ github.event.pull_request.title }}"
+          elif [ "${{ github.event.action }}" == "closed" ] && [ "${{ github.event.pull_request.merged }}" == "true" ]; then
+            MESSAGE="✅ Pull Request *merged* in *${{ github.repository }}*%0A👤 Author: ${{ github.actor }}%0A🔗 Link: ${{ github.event.pull_request.html_url }}%0A📌 Title: ${{ github.event.pull_request.title }}"
+          else
+            exit 0
+          fi
+
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="🚀 New Pull Request Created in *${{ github.repository }}*%0A
-👤 Author: ${{ github.actor }}%0A
-🔗 Link: ${{ github.event.pull_request.html_url }}%0A
-📌 Title: ${{ github.event.pull_request.title }}" \
-  -d parse_mode=Markdown
+            -d text="$MESSAGE" \
+            -d parse_mode=Markdown
