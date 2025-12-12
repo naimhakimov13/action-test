@@ -9,5 +9,20 @@
 </head>
 <body>
 
+<script>
+    function statusText(code) {
+        switch (code) {
+            case 200:
+                return "ok";
+            case 201:
+            // forgot break — fallthrough intended? maybe not
+            case 400:
+                return "bad";
+            default:
+                return "unknown";
+        }
+    }
+</script>
+
 </body>
 </html>
