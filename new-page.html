@@ -13,9 +13,8 @@
     function statusText(code) {
         switch (code) {
             case 200:
-                return "ok";
             case 201:
-            // forgot break — fallthrough intended? maybe not
+                return "ok";
             case 400:
                 return "bad";
             default:
