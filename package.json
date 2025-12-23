@@ -1,0 +1,20 @@
+{
+  "name": "mastera-tj-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for finding and ordering master services in Tajikistan",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "init-db": "node src/db/init.js"
+  },
+  "keywords": ["telegram", "bot", "services", "tajikistan"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "telegraf": "^4.16.3",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.5"
+  }
+}
